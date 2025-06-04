@@ -1,33 +1,60 @@
-import { auth } from "@/auth";
-import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import LogoutBtn from "./ui/logout-button";
-import { signIn } from "next-auth/react";
-import LoginBtn from "./ui/login-button";
+import Image from "next/image";
+import { auth, signOut, signIn } from "@/auth";
+import { BadgePlus, LogOut } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Navbar = async () => {
   const session = await auth();
-  console.log(session);
+
   return (
-    <header className="px-5 py-3 shadow-sm font-work-sans bg-white">
+    <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
       <nav className="flex justify-between items-center">
-        <Link href={"/"}>
-          <Image src="/logo.png" alt="Logo" width={140} height={32} />
+        <Link href="/">
+          <Image src="/logo.png" alt="logo" width={144} height={30} />
         </Link>
-        <div className="flex items-center gap-5">
+
+        <div className="flex items-center gap-5 text-black">
           {session && session?.user ? (
             <>
               <Link href="/startup/create">
-                <span>Create</span>
+                <span className="max-sm:hidden">Create</span>
+                <BadgePlus className="size-6 sm:hidden" />
               </Link>
-              <LogoutBtn />
-              <Link href={`/user/${session?.user?.id}`}>
-                <span>{session?.user?.name}</span>
+
+              <form
+                action={async () => {
+                  "use server";
+
+                  await signOut({ redirectTo: "/" });
+                }}
+              >
+                <button type="submit" className="cursor-pointer">
+                  <span className="max-sm:hidden text-default">Logout</span>
+                  <LogOut className="size-6 sm:hidden text-red-500" />
+                </button>
+              </form>
+
+              <Link href={`/user/${session?.id}`}>
+                <Avatar className="size-10">
+                  <AvatarImage
+                    src={session?.user?.image || ""}
+                    alt={session?.user?.name || ""}
+                  />
+                  <AvatarFallback>AV</AvatarFallback>
+                </Avatar>
               </Link>
             </>
           ) : (
-            <LoginBtn />
+            <form
+              action={async () => {
+                "use server";
+
+                await signIn("github");
+              }}
+            >
+              <button type="submit">Login</button>
+            </form>
           )}
         </div>
       </nav>
