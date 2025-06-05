@@ -8,20 +8,43 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "packageManager": "npm@10.9.2",
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
+  },
   "dependencies": {
+    "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.91.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.511.0",
+    "next": "15.3.3",
+    "next-auth": "^5.0.0-beta.28",
+    "next-sanity": "^9.12.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.3"
+    "sanity": "^3.91.0",
+    "sanity-plugin-markdown": "^5.1.0",
+    "server-only": "^0.0.1",
+    "styled-components": "^6.1.18",
+    "tailwind-merge": "^3.3.0",
+    "tailwindcss-typography": "^3.1.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4",
+    "tailwindcss-animate": "^1.0.7",
+    "tw-animate-css": "^1.3.3",
+    "typescript": "^5"
   }
 }
