@@ -1,5 +1,8 @@
 import SearchForm from "@/components/search-form";
-import StartupCard from "@/components/startup-card";
+import StartupCard, { StartupTypeCard } from "@/components/startup-card";
+import { client } from "@/sanity/lib/client";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { Post } from "@/types/post";
 
 export default async function Home({
@@ -8,41 +11,8 @@ export default async function Home({
   searchParams: Promise<{ query: string }>;
 }) {
   const query = (await searchParams).query;
-  const posts: Post[] = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: { _id: 1, name: "H4m3d" },
-      _id: 1,
-      description: "This is a Description",
-      image:
-        "https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      category: "Projects",
-      title: "My Project",
-    },
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: { _id: 1, name: "Hamed" },
-      _id: 2,
-      description: "This is a Description",
-      image:
-        "https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      category: "Projects",
-      title: "My Project",
-    },
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: { _id: 1, name: "Linux_King" },
-      _id: 3,
-      description: "This is a Description",
-      image:
-        "https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      category: "Projects",
-      title: "My Project",
-    },
-  ];
+  const params = { search: query || null };
+  const { data: posts } = await sanityFetch({ query: STARTUPS_QUERY, params });
   return (
     <>
       <section className="pink_container pattern">
@@ -61,7 +31,7 @@ export default async function Home({
         </p>
         <ul className="mt-7 card_grid">
           {posts.length > 0 ? (
-            posts.map((post: Post) => (
+            posts.map((post: StartupTypeCard) => (
               <StartupCard post={post} key={post?._id} />
             ))
           ) : (
@@ -69,6 +39,7 @@ export default async function Home({
           )}
         </ul>
       </section>
+      <SanityLive />
     </>
   );
 }

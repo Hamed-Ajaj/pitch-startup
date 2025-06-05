@@ -9,7 +9,6 @@
 
 @theme {
     --breakpoint-xs: 475px;
-    --color-avocado-100: oklch(0.99 0 0);
 
     --color-default-100: oklch(0.98 0.05 15);
     --color-default: oklch(0.65 0.25 15);
