@@ -9,7 +9,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { markdownSchema } from "sanity-plugin-markdown";
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from "./sanity/env";
+import { apiVersion, dataset, projectId, token } from "./sanity/env";
 import { schema } from "./sanity/schemaTypes";
 import { structure } from "./sanity/structure";
 
@@ -17,6 +17,7 @@ export default defineConfig({
   basePath: "/studio",
   projectId,
   dataset,
+  token,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
