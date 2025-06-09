@@ -29,10 +29,12 @@ const StartupPostDetails = async ({
         <p className="sub-heading !max-w-5xl">{post?.description}</p>
       </section>
       <section className="section_container">
-        <img
+        <Image
           src={post?.image}
           alt="thumbnail"
-          className="w-full h-auto rounded-xl max-h-[580px] object-cover"
+          className="w-full h-[600px] rounded-xl object-bottom object-cover"
+          width={720}
+          height={520}
         />
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
           <div className="flex-between gap-5">
