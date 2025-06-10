@@ -45,11 +45,11 @@ const ComponentName = async ({
           <p className="text-30-bold">
             {session?.id === userId ? "Your" : "All"} Startups
           </p>
-          <ul className="card_grid-sm">
-            <Suspense fallback={<StartupCardSkeleton />}>
+          <Suspense fallback={<StartupCardSkeleton />}>
+            <ul className="card_grid-sm">
               <UserStartups id={userId} />
-            </Suspense>
-          </ul>
+            </ul>
+          </Suspense>
         </div>
       </section>
     </>
