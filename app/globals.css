@@ -194,7 +194,7 @@
   }
 
   .text-14-normal {
-    @apply font-normal text-sm text-white-100/80;
+    @apply font-normal text-sm text-white-100/90;
   }
 
   .pink_container {

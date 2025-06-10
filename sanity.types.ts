@@ -44,7 +44,7 @@ export type Author = {
   name?: string;
   username?: string;
   email?: string;
-  image?: string;
+  image?: string | undefined;
   bio?: string;
 };
 
@@ -168,7 +168,21 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Startup | Author | Markdown | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes =
+  | Startup
+  | Author
+  | Markdown
+  | SanityImagePaletteSwatch
+  | SanityImagePalette
+  | SanityImageDimensions
+  | SanityImageHotspot
+  | SanityImageCrop
+  | SanityFileAsset
+  | SanityImageAsset
+  | SanityImageMetadata
+  | Geopoint
+  | Slug
+  | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: STARTUPS_QUERY
@@ -194,6 +208,6 @@ export type STARTUPS_QUERYResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "*[_type == \"startup\" && defined(slug.current)] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  _createdAt,\n  author -> {\n    _id, name, image, bio\n  },\n  views,\n  description,\n  category,\n  image,\n}": STARTUPS_QUERYResult;
+    '*[_type == "startup" && defined(slug.current)] | order(_createdAt desc) {\n  _id,\n  title,\n  slug,\n  _createdAt,\n  author -> {\n    _id, name, image, bio\n  },\n  views,\n  description,\n  category,\n  image,\n}': STARTUPS_QUERYResult;
   }
 }

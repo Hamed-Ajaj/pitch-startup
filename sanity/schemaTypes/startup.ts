@@ -7,8 +7,7 @@ export const startup = {
   fields: [
     defineField({
       name: "title",
-      type: "text",
-      validation: (Rule) => Rule.min(1).required(),
+      type: "string",
     }),
     defineField({
       name: "slug",
