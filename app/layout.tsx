@@ -55,8 +55,9 @@ const workSans = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "YC Directory",
-  description: "Welcome Habibi",
+  title: "Pitch Startup",
+  description:
+    "PitchStartup is a community-driven platform where ambitious founders share their startup ideas and gain real-time feedback, visibility, and connections — all before launch.",
 };
 
 export default function RootLayout({
