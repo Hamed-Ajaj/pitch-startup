@@ -28,6 +28,7 @@ const Navbar = async () => {
 
                   await signOut({ redirectTo: "/" });
                 }}
+                className="flex items-center"
               >
                 <button type="submit" className="cursor-pointer">
                   <span className="max-sm:hidden text-default">Logout</span>
@@ -41,7 +42,7 @@ const Navbar = async () => {
                     src={session?.user?.image || ""}
                     alt={session?.user?.name || ""}
                   />
-                  <AvatarFallback>AV</AvatarFallback>
+                  <AvatarFallback>{session?.user?.name?.[0]}</AvatarFallback>
                 </Avatar>
               </Link>
             </>
