@@ -4,7 +4,9 @@ import React from "react";
 import StartupCard, { StartupTypeCard } from "./startup-card";
 
 const AllStartups = async ({ params }) => {
-  const posts = await client.fetch(STARTUPS_QUERY, params);
+  const posts = await client.fetch(STARTUPS_QUERY, params, {
+    next: { revalidate: 10 },
+  });
 
   return (
     <ul className="mt-7 card_grid ">

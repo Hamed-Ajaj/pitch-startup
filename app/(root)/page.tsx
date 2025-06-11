@@ -10,6 +10,7 @@ export default async function Home({
 }) {
   const query = (await searchParams).query;
   const params = { search: query || null };
+
   return (
     <>
       <section className="pink_container pattern">

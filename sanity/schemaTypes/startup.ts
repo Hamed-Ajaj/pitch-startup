@@ -24,6 +24,25 @@ export const startup = {
     defineField({
       name: "views",
       type: "number",
+      initialValue: 0,
+    }),
+    // Add field to track which users have viewed this startup
+    defineField({
+      name: "viewedBy",
+      title: "Viewed By Users",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Array of user IDs who have viewed this startup",
+      hidden: true, // Hide from studio UI
+    }),
+    // Alternative: Track by session IDs (if no user auth)
+    defineField({
+      name: "viewedBySessions",
+      title: "Viewed By Sessions",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Array of session IDs who have viewed this startup",
+      hidden: true, // Hide from studio UI
     }),
     defineField({
       name: "description",
@@ -43,6 +62,49 @@ export const startup = {
     defineField({
       name: "pitch",
       type: "markdown",
+    }),
+    // Engagement tracking fields
+    defineField({
+      name: "likes",
+      title: "Likes Count",
+      type: "number",
+      initialValue: 0,
+    }),
+    defineField({
+      name: "likedBy",
+      title: "Liked By Users",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Array of user IDs who liked this startup",
+      hidden: true,
+    }),
+    defineField({
+      name: "upvotes",
+      title: "Upvotes Count",
+      type: "number",
+      initialValue: 0,
+    }),
+    defineField({
+      name: "upvotedBy",
+      title: "Upvoted By Users",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Array of user IDs who upvoted this startup",
+      hidden: true,
+    }),
+    defineField({
+      name: "downvotes",
+      title: "Downvotes Count",
+      type: "number",
+      initialValue: 0,
+    }),
+    defineField({
+      name: "downvotedBy",
+      title: "Downvoted By Users",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Array of user IDs who downvoted this startup",
+      hidden: true,
     }),
   ],
 };
