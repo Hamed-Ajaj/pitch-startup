@@ -18,3 +18,7 @@ export const formSchema = z.object({
     }),
   pitch: z.string().min(10),
 });
+
+export const commentSchema = z.object({
+  content: z.string().min(1).max(500),
+});
