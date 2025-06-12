@@ -17,6 +17,10 @@ import StartupCard, { StartupTypeCard } from "@/components/startup-card";
 import AddCommentForm from "@/components/add-comment-form";
 import DeleteCommentButton from "@/components/ui/delete-comment-btn";
 import { auth } from "@/auth";
+import { Button } from "@/components/ui/button";
+import { ArrowDown, ArrowUp } from "lucide-react";
+import UpvoteDownvoteButtons from "@/components/ui/upvote-downvote-btn";
+import EngagementSection from "@/components/engagement-section";
 const md = markdownit();
 
 const StartupPostDetails = async ({
@@ -37,7 +41,7 @@ const StartupPostDetails = async ({
 
   const parsedContent = md.render(post?.pitch || "");
   if (!post) return notFound();
-  console.log(comments);
+  console.log(post);
   return (
     <>
       <section className="pink_container pattern !min-h-[230px]">
@@ -45,6 +49,14 @@ const StartupPostDetails = async ({
         <h1 className="heading">{post?.title}</h1>
         <p className="sub-heading !max-w-5xl">{post?.description}</p>
       </section>
+
+      {/* engagements */}
+      <Suspense fallback={<div>Loading...</div>}>
+        <EngagementSection post={post} />
+      </Suspense>
+
+      <hr className="divider !max-w-6xl" />
+
       <section className="section_container">
         <Image
           src={post?.image}
@@ -105,7 +117,7 @@ const StartupPostDetails = async ({
           </h3>
 
           {/* comment form */}
-          <AddCommentForm postId={post?._id} />
+          <AddCommentForm postId={post?._id} sessionId={session?.id} />
 
           {/* comments list */}
           {comments?.length > 0 &&
@@ -131,10 +143,7 @@ const StartupPostDetails = async ({
                     </div>
                     <div>
                       {comment.author._id === session?.id && (
-                        <DeleteCommentButton
-                          commentId={comment._id}
-                          postId={postId}
-                        />
+                        <DeleteCommentButton commentId={comment._id} />
                       )}
                     </div>
                   </div>

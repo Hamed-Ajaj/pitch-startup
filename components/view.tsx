@@ -19,7 +19,6 @@ const View = async ({ id }: { id: string }) => {
 
   // Check if current user has already viewed this startup
   const hasUserViewed = userId && viewedBy?.includes(userId) ? true : false;
-  console.log(hasUserViewed);
   // Only increment view count if user hasn't viewed before
   if (userId && !hasUserViewed) {
     after(async () => {

@@ -1,30 +1,38 @@
 "use client";
-import React from "react";
+import React, { useState, useTransition } from "react";
 import { Button } from "./button";
-import { Trash } from "lucide-react";
-import { client } from "@/sanity/lib/client";
+import { Loader, Trash } from "lucide-react";
+import { deleteComment } from "@/lib/actions";
+import { toast } from "sonner";
 
-const DeleteCommentButton = ({
-  commentId,
-  postId,
-}: {
-  commentId: string;
-  postId: string;
-}) => {
-  const handleDeleteComment = async (commentId: string) => {
-    await client
-      .patch(postId)
-      .unset([`comment[_ref=="${commentId}"]`])
-      .commit();
-    await client.delete(commentId);
+const DeleteCommentButton = ({ commentId }: { commentId: string }) => {
+  // const [isPending, startTransition] = useTransition();
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const handleDeleteComment = async () => {
+    try {
+      setIsDeleting(true);
+      const result = await deleteComment(commentId);
+      setIsDeleting(false);
+      return toast.success("Comment has Been deleted Successfully");
+    } catch (error) {
+      console.log(error);
+      setIsDeleting(false);
+    }
   };
+
   return (
     <Button
-      variant={"destructive"}
+      variant="destructive"
       className="cursor-pointer hover:bg-red-500"
-      onClick={() => handleDeleteComment(commentId)}
+      onClick={handleDeleteComment}
+      disabled={isDeleting}
     >
-      <Trash className="size-4" />
+      {isDeleting ? (
+        <Loader className="animate-spin" />
+      ) : (
+        <Trash className="size-4" />
+      )}
     </Button>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { Button } from "./ui/button";
 import { createComment } from "@/lib/actions";
 import { toast } from "sonner";
@@ -11,7 +11,7 @@ const AddCommentForm = ({
   postId: string;
   sessionId: string;
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isPending, startTransition] = useTransition();
   const handleCreateComment = async (formData: FormData) => {
     if (!sessionId)
       return toast.error(`User Not Authenticated`, {
@@ -24,16 +24,16 @@ const AddCommentForm = ({
         status: "ERROR",
       };
     }
-    try {
-      setLoading(true);
-      const result = await createComment(postId, comment);
 
-      setLoading(false);
-      return toast.success("Comment added Successfully");
-    } catch (error) {
-      setLoading(false);
-      return toast.error(`Error : ${error}`);
-    }
+    startTransition(async () => {
+      try {
+        const result = await createComment(postId, comment);
+
+        return toast.success("Comment added Successfully");
+      } catch (error) {
+        return toast.error(`Error : ${error}`);
+      }
+    });
   };
 
   return (
@@ -54,9 +54,9 @@ const AddCommentForm = ({
         <Button
           type="submit"
           className="startup-form_btn text-white cursor-pointer mt-5"
-          disabled={loading}
+          disabled={isPending}
         >
-          {loading ? "Submitting..." : "Submit Comment"}
+          {isPending ? "Submitting..." : "Submit Comment"}
         </Button>
       </form>
     </div>

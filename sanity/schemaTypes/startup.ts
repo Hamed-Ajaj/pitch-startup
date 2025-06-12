@@ -65,20 +65,6 @@ export const startup = {
     }),
     // Engagement tracking fields
     defineField({
-      name: "likes",
-      title: "Likes Count",
-      type: "number",
-      initialValue: 0,
-    }),
-    defineField({
-      name: "likedBy",
-      title: "Liked By Users",
-      type: "array",
-      of: [{ type: "string" }],
-      description: "Array of user IDs who liked this startup",
-      hidden: true,
-    }),
-    defineField({
       name: "upvotes",
       title: "Upvotes Count",
       type: "number",
