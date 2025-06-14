@@ -1,5 +1,6 @@
 import AllStartups from "@/components/all-startups";
 import SearchForm from "@/components/search-form";
+import StartupFilters from "@/components/startup-filters";
 import StartupCardSkeleton from "@/components/ui/startup-card-skeleton";
 import { Suspense } from "react";
 
@@ -10,7 +11,6 @@ export default async function Home({
 }) {
   const query = (await searchParams).query;
   const params = { search: query || null };
-
   return (
     <>
       <section className="pink_container pattern">
@@ -23,7 +23,8 @@ export default async function Home({
         <SearchForm query={query} />
       </section>
 
-      <section className="section_container">
+      <section className="section_container flex flex-col gap-5">
+        <StartupFilters searchParams={searchParams} />
         <p className="text-30-semibold">
           {query ? `Search results for "${query}"` : "All Startups"}
         </p>

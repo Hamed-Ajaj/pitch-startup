@@ -4,6 +4,7 @@ import "./globals.css";
 import "easymde/dist/easymde.min.css";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/next";
 const workSans = localFont({
   src: [
     {
@@ -70,6 +71,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${workSans.variable}`}>
         <SessionProvider>{children}</SessionProvider>
+        <Analytics />
         <Toaster />
       </body>
     </html>
