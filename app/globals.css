@@ -346,6 +346,10 @@
     @apply font-medium text-[16px] bg-default-100 px-4 py-2 rounded-full;
   }
 
+  .engagement-skeleton {
+    @apply bg-zinc-300 w-full h-10 px-4 py-2 rounded-lg;
+  }
+
   .pattern {
     background-image: linear-gradient(
       to right,

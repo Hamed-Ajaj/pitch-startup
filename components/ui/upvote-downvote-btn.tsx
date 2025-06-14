@@ -2,8 +2,6 @@
 import React from "react";
 import { Button } from "./button";
 import { ArrowDown, ArrowUp, ArrowUpSquare } from "lucide-react";
-import { client } from "@/sanity/lib/client";
-import { auth } from "@/auth";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { downvote, upvote } from "@/lib/actions";
@@ -11,15 +9,11 @@ import { downvote, upvote } from "@/lib/actions";
 const UpvoteDownvoteButtons = ({
   postId,
   upvotes,
-  upvotedBy,
   downvotes,
-  downvotedBy,
 }: {
   postId: string;
   upvotes: number;
-  upvotedBy: string[];
   downvotes: number;
-  downvotedBy: string[];
 }) => {
   const session = useSession();
   const existingUpvote = upvotes.find(
@@ -36,40 +30,76 @@ const UpvoteDownvoteButtons = ({
   const [isUpvoted, setIsUpvoted] = React.useState(existingUpvote);
   const [isDownvoted, setIsDownvoted] = React.useState(existingDownvote);
   const [isLoading, setIsLoading] = React.useState(false);
+  const clickInProgress = React.useRef(false);
+
   const handleUpvote = async () => {
-    if (!session.data) return;
+    if (clickInProgress.current) return;
+    clickInProgress.current = true;
+
+    if (!session.data) {
+      toast.error("You must be logged in to vote");
+      clickInProgress.current = false;
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
-      if (existingUpvote) {
+      if (isUpvoted) {
         setUpvoteCount((prev) => prev - 1);
-        setIsUpvoted(!isUpvoted);
+        setIsUpvoted(false);
       } else {
         setUpvoteCount((prev) => prev + 1);
-        setIsUpvoted(!isUpvoted);
+        if (isDownvoted) {
+          setDownvoteCount((prev) => prev - 1);
+          setIsDownvoted(false);
+        }
+        setIsUpvoted(true);
       }
-      const res = await upvote(postId);
-      console.log(res);
+
+      await upvote(postId);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to upvote");
+    } finally {
       setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
+      clickInProgress.current = false;
     }
   };
 
   const handleDownvote = async () => {
-    if (!session.data) return;
+    if (clickInProgress.current) return;
+    clickInProgress.current = true;
+
+    if (!session.data) {
+      toast.error("You must be logged in to vote");
+      clickInProgress.current = false;
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      if (existingDownvote) {
+      if (isDownvoted) {
         setDownvoteCount((prev) => prev - 1);
-        setIsDownvoted(!isDownvoted);
+        setIsDownvoted(false);
       } else {
         setDownvoteCount((prev) => prev + 1);
-        setIsDownvoted(!isDownvoted);
+        if (isUpvoted) {
+          setUpvoteCount((prev) => prev - 1);
+          setIsUpvoted(false);
+        }
+        setIsDownvoted(true);
       }
+
       const res = await downvote(postId);
-      console.log(res);
-    } catch (error) {
-      console.error(error);
+      if (res.status !== "SUCCESS") {
+        toast.error("Failed to downvote");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to downvote");
+    } finally {
+      setIsLoading(false);
+      clickInProgress.current = false;
     }
   };
 

@@ -9,11 +9,9 @@ import { COMMENTS_COUNT_QUERY } from "@/sanity/lib/queries";
 export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
 const StartupCard = async ({ post }: { post: StartupTypeCard }) => {
-  console.log("StartupCard post", post._id);
   const commentsCount = await client.fetch(COMMENTS_COUNT_QUERY, {
     id: post?._id,
   });
-  // console.log(commentsCount);
   if (!commentsCount) return <>loading...</>;
   return (
     <li className="startup-card group">

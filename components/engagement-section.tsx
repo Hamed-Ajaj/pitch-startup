@@ -9,28 +9,22 @@ import {
 import { MessageCircle } from "lucide-react";
 
 const EngagementSection = async ({ post }) => {
-  const upvotes = await client
-    .withConfig({ useCdn: false })
-    .fetch(UPVOTES_QUERY, { id: post._id });
-  const downvotes = await client
-    .withConfig({ useCdn: false })
-    .fetch(DOWNVOTES_QUERY, { id: post._id });
-  const commentsCount = await client
-    .withConfig({ useCdn: false })
-    .fetch(COMMENTS_COUNT_QUERY, {
+  const [upvotes, downvotes, commentsCount] = await Promise.all([
+    client.withConfig({ useCdn: false }).fetch(UPVOTES_QUERY, { id: post._id }),
+    client
+      .withConfig({ useCdn: false })
+      .fetch(DOWNVOTES_QUERY, { id: post._id }),
+    client.withConfig({ useCdn: false }).fetch(COMMENTS_COUNT_QUERY, {
       id: post?._id,
-    });
-  console.log(commentsCount);
-  console.log(post._id);
-  console.log(upvotes);
+    }),
+  ]);
+
   return (
     <section className="section_container flex justify-between items-center ">
       <UpvoteDownvoteButtons
         postId={post._id}
         upvotes={upvotes}
-        upvotedBy={post?.upvotedBy}
         downvotes={downvotes}
-        downvotedBy={post?.downvotedBy}
       />
       {/* comments */}
       <div className="flex gap-2 items-center">

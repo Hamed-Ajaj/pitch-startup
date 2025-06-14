@@ -17,10 +17,8 @@ import StartupCard, { StartupTypeCard } from "@/components/startup-card";
 import AddCommentForm from "@/components/add-comment-form";
 import DeleteCommentButton from "@/components/ui/delete-comment-btn";
 import { auth } from "@/auth";
-import { Button } from "@/components/ui/button";
-import { ArrowDown, ArrowUp } from "lucide-react";
-import UpvoteDownvoteButtons from "@/components/ui/upvote-downvote-btn";
 import EngagementSection from "@/components/engagement-section";
+import EngagementSkeleton from "@/components/ui/engagement-skeleton";
 const md = markdownit();
 
 const StartupPostDetails = async ({
@@ -41,7 +39,6 @@ const StartupPostDetails = async ({
 
   const parsedContent = md.render(post?.pitch || "");
   if (!post) return notFound();
-  console.log(post);
   return (
     <>
       <section className="pink_container pattern !min-h-[230px]">
@@ -51,11 +48,11 @@ const StartupPostDetails = async ({
       </section>
 
       {/* engagements */}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<EngagementSkeleton />}>
         <EngagementSection post={post} />
       </Suspense>
 
-      <hr className="divider !max-w-6xl" />
+      <hr className="divider !max-w-6xl !my-4" />
 
       <section className="section_container">
         <Image

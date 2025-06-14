@@ -144,45 +144,6 @@ export const deleteComment = async (commentId: string) => {
   }
 };
 
-// export const upvote = async (startupId: string) => {
-//   const session = await auth();
-//   const upvotes = await client
-//     .withConfig({ useCdn: false })
-//     .fetch(UPVOTES_QUERY, { id: startupId });
-//   try {
-//     for (let i = 0; i < upvotes.length; i++) {
-//       if (upvotes[i].author._ref === session?.id) {
-//         await writeClient.withConfig({ useCdn: false }).delete(upvotes[i]._id);
-//       }
-//     }
-//     const upvote = await writeClient.withConfig({ useCdn: false }).create({
-//       _type: "upvote",
-//       author: {
-//         _type: "author",
-//         _ref: session?.id,
-//       },
-//       startup: {
-//         _type: "startup",
-//         _ref: startupId,
-//       },
-//     });
-
-//     revalidatePath(`/startup`);
-//     revalidatePath("/");
-//     return parseServerActionRes({
-//       ...(upvote || []),
-//       error: "",
-//       status: "SUCCESS",
-//     });
-//   } catch (error) {
-//     console.error("Error upvoting comment:", error);
-//     return parseServerActionRes({
-//       error: "Failed to upvote comment",
-//       status: "ERROR",
-//     });
-//   }
-// };
-
 export const upvote = async (startupId: string) => {
   const session = await auth();
 
