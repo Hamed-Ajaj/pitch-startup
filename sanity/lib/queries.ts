@@ -156,6 +156,14 @@ export const STARTUP_VIEWS_QUERY = defineQuery(`
     }
 `);
 
+export const UPVOTES_QUERY = defineQuery(`
+  *[_type == "upvote" && startup._ref == $id]
+`);
+
+export const DOWNVOTES_QUERY = defineQuery(`
+  *[_type == "downvote" && startup._ref == $id]
+`);
+
 export const AUTHOR_BY_GITHUB_ID_QUERY = defineQuery(`
 *[_type == "author" && id == $id][0]{
     _id,

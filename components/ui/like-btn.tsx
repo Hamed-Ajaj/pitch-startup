@@ -51,7 +51,6 @@ const LikeButton = ({
     startTransition(async () => {
       try {
         const result = await toggleLike(startupId, userId);
-        console.log("result", result);
         if (result.success) {
           setLikes(result.likes);
           setLikedBy(result.likedBy);
