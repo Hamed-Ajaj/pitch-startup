@@ -66,31 +66,13 @@ export const startup = {
     // Engagement tracking fields
     defineField({
       name: "upvotes",
-      title: "Upvotes Count",
-      type: "number",
-      initialValue: 0,
-    }),
-    defineField({
-      name: "upvotedBy",
-      title: "Upvoted By Users",
       type: "array",
-      of: [{ type: "string" }],
-      description: "Array of user IDs who upvoted this startup",
-      hidden: true,
+      of: [{ type: "reference", to: { type: "upvote" } }],
     }),
     defineField({
       name: "downvotes",
-      title: "Downvotes Count",
-      type: "number",
-      initialValue: 0,
-    }),
-    defineField({
-      name: "downvotedBy",
-      title: "Downvoted By Users",
       type: "array",
-      of: [{ type: "string" }],
-      description: "Array of user IDs who downvoted this startup",
-      hidden: true,
+      of: [{ type: "reference", to: { type: "downvote" } }],
     }),
   ],
 };

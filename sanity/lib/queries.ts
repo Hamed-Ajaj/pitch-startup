@@ -14,19 +14,13 @@ export const STARTUPS_QUERY = defineQuery(`
       _id, name, image, bio
     },
     views,
+    upvotes,
+    downvotes,
     viewedBy,
     viewedBySessions,
-    likes,
-    likedBy,
-    upvotes,
-    upvotedBy,
-    downvotes,
-    downvotedBy,
     description,
     category,
     image,
-    "commentCount": length(comments),
-    "totalEngagement": likes + upvotes + length(comments)
   }
 `);
 
@@ -43,12 +37,8 @@ export const STARTUP_BY_ID_QUERY = defineQuery(`
     views,
     viewedBy,
     viewedBySessions,
-    likes,
-    likedBy,
     upvotes,
-    upvotedBy,
     downvotes,
-    downvotedBy,
     description,
     category,
     image,
@@ -62,8 +52,6 @@ export const STARTUP_BY_ID_QUERY = defineQuery(`
       authorId,
       content,
       createdAt,
-      likes,
-      likedBy,
       replies[]{
         author->{
           _id,
@@ -93,35 +81,6 @@ export const STARTUP_ENGAGEMENT_QUERY = defineQuery(`
     downvotedBy
   }
 `);
-
-// Query for comments section only
-// export const STARTUP_COMMENTS_QUERY = defineQuery(`
-//   *[_type == "startup" && _id == $id][0]{
-//     _id,
-//     comments[]{
-//       author->{
-//         _id,
-//         name,
-//         image
-//       },
-//       authorId,
-//       content,
-//       createdAt,
-//       likes,
-//       likedBy,
-//       replies[]{
-//         author->{
-//           _id,
-//           name,
-//           image
-//         },
-//         authorId,
-//         content,
-//         createdAt
-//       }
-//     }
-//   }
-// `);
 
 export const COMMENTS_QUERY = defineQuery(`
   *[_type == "comment" && startup._ref == $id] | order(_createdAt desc) {

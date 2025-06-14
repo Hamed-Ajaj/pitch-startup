@@ -55,49 +55,59 @@ const StartupPostDetails = async ({
       <hr className="divider !max-w-6xl !my-4" />
 
       <section className="section_container">
-        <Image
-          src={post?.image}
-          alt="thumbnail"
-          className="w-full h-[600px] rounded-xl object-bottom object-cover"
-          width={720}
-          height={520}
-        />
-        <div className="space-y-5 mt-10 max-w-4xl mx-auto">
-          <div className="flex-between gap-5">
-            <Link
-              href={`/user/${post?.author?._id}`}
-              className="flex gap-2 items-center mb-3"
-            >
-              <Image
-                src={post?.author?.image}
-                alt="avatar"
-                width={64}
-                height={64}
-                className="rounded-full drop-shadow-lg"
-              />
-              <div>
-                <p className="text-20-medium">{post?.author?.name}</p>
-                <p className="text-16-medium">@{post?.author?.username}</p>
-              </div>
-            </Link>
-            <p className="category-tag">{post?.category}</p>
+        <div className="max-w-4xl mx-auto">
+          <Image
+            src={post.image}
+            alt="thumbnail"
+            width={720}
+            height={720}
+            className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] rounded-xl object-cover"
+          />
+
+          <div className="space-y-6 mt-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <Link
+                href={`/user/${post?.author?._id}`}
+                className="flex gap-3 items-center"
+              >
+                <Image
+                  src={post?.author?.image}
+                  alt="avatar"
+                  width={64}
+                  height={64}
+                  className="rounded-full drop-shadow-lg"
+                />
+                <div>
+                  <p className="text-20-medium">{post?.author?.name}</p>
+                  <p className="text-16-medium text-gray-600">
+                    @{post?.author?.username}
+                  </p>
+                </div>
+              </Link>
+              <p className="category-tag self-start sm:self-center">
+                {post?.category}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-30-bold">Pitch Details</h3>
+              {parsedContent ? (
+                <article
+                  dangerouslySetInnerHTML={{ __html: parsedContent }}
+                  className="prose prose-lg max-w-none font-work-sans break-words"
+                ></article>
+              ) : (
+                <p className="no-result">No details provided</p>
+              )}
+            </div>
           </div>
-          <h3 className="text-30-bold">Pitch Details</h3>
-          {parsedContent ? (
-            <article
-              dangerouslySetInnerHTML={{ __html: parsedContent }}
-              className="prose max-w-4xl font-work-sans break-all"
-            ></article>
-          ) : (
-            <p className="no-result">No details provided</p>
-          )}
         </div>
         <hr className="divider" />
 
         {/* Editor selected startups */}
         {editorPosts?.length > 0 && (
-          <div className="max-w-4xl mx-auto">
-            <p className="text-30-semibold">Editor Picks</p>
+          <div className="max-w-4xl mx-auto mt-12">
+            <p className="text-30-semibold mb-6">Editor Picks</p>
 
             <ul className="mt-7 card_grid-sm">
               {editorPosts.map((post: StartupTypeCard, i: number) => (
@@ -107,53 +117,65 @@ const StartupPostDetails = async ({
           </div>
         )}
         {/* comments */}
-        <section className="max-w-4xl mx-auto flex flex-col gap-5">
+        <section className="max-w-4xl mx-auto mt-12">
           {/* comment number */}
-          <h3 className="text-30-semibold  mt-10">
+          <h3 className="text-30-semibold mb-6">
             Comments ({comments?.length || 0})
           </h3>
 
           {/* comment form */}
-          <AddCommentForm postId={post?._id} sessionId={session?.id} />
+          <div className="mb-8">
+            <AddCommentForm postId={post?._id} sessionId={session?.id} />
+          </div>
 
           {/* comments list */}
-          {comments?.length > 0 &&
-            comments.map((comment) => (
-              <div
-                key={comment?._id}
-                className="max-w-4xl  mb-3 rounded-lg bg-white p-5 shadow-md"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <Image
-                    src={comment.author?.image || "/default-avatar.png"}
-                    alt={comment.author?.name || "Comment Author"}
-                    width={48}
-                    height={48}
-                    className="rounded-full"
-                  />
-                  <div className="flex w-full items-center justify-between">
-                    <div>
-                      <p className="text-16-medium">{comment.author?.name}</p>
-                      <p className="text-14 text-gray-500">
-                        {formatDate(comment._createdAt)}
+          <div className="space-y-4">
+            {comments?.length > 0 &&
+              comments.map((comment) => (
+                <div
+                  key={comment?._id}
+                  className="rounded-lg bg-white p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start gap-4">
+                    <Image
+                      src={comment.author?.image || "/default-avatar.png"}
+                      alt={comment.author?.name || "Comment Author"}
+                      width={48}
+                      height={48}
+                      className="rounded-full flex-shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+                        <div>
+                          <p className="text-16-medium">
+                            {comment.author?.name}
+                          </p>
+                          <p className="text-14 text-gray-500">
+                            {formatDate(comment._createdAt)}
+                          </p>
+                        </div>
+                        {comment.author._id === session?.id && (
+                          <div className="flex-shrink-0">
+                            <DeleteCommentButton commentId={comment._id} />
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-16 leading-relaxed break-words">
+                        {comment.content}
                       </p>
-                    </div>
-                    <div>
-                      {comment.author._id === session?.id && (
-                        <DeleteCommentButton commentId={comment._id} />
-                      )}
                     </div>
                   </div>
                 </div>
-                <p className="text-16">{comment.content}</p>
-              </div>
-            ))}
+              ))}
+          </div>
         </section>
 
         {/* views  */}
-        <Suspense fallback={<Skeleton className="view-skeleton" />}>
-          <View id={post?._id} />
-        </Suspense>
+        <div className="max-w-4xl mx-auto mt-8">
+          <Suspense fallback={<Skeleton className="view-skeleton" />}>
+            <View id={post?._id} />
+          </Suspense>
+        </div>
       </section>
     </>
   );
