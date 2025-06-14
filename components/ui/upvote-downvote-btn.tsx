@@ -17,10 +17,10 @@ const UpvoteDownvoteButtons = ({
 }) => {
   const session = useSession();
   const existingUpvote = upvotes.find(
-    (vote: any) => vote.author._ref === session?.data.id,
+    (vote: any) => vote.author._ref === session?.data?.id,
   );
   const existingDownvote = downvotes.find(
-    (vote: any) => vote.author._ref === session?.data.id,
+    (vote: any) => vote.author._ref === session?.data?.id,
   );
 
   const [upvoteCount, setUpvoteCount] = React.useState(upvotes.length || 0);
