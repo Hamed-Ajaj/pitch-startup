@@ -6,14 +6,11 @@ import { writeClient } from "@/sanity/lib/write-client";
 import { parseServerActionRes } from "./utils";
 import { revalidatePath } from "next/cache";
 import { client } from "@/sanity/lib/client";
-import { author } from "@/sanity/schemaTypes/author";
 import {
+  ALL_ENGAGEMENTS_QUERY,
   DOWNVOTES_QUERY,
-  STARTUP_BY_ID_QUERY,
-  STARTUP_UPVOTES_QUERY,
   UPVOTES_QUERY,
 } from "@/sanity/lib/queries";
-import { writer } from "node:repl";
 
 export const createPitch = async (
   state: any,
@@ -40,6 +37,7 @@ export const createPitch = async (
       description,
       category,
       image: image,
+      // picture: picture,
       slug: {
         _type: slug,
         current: slug,
@@ -63,6 +61,44 @@ export const createPitch = async (
 
     return parseServerActionRes({
       error: JSON.stringify(error),
+      status: "ERROR",
+    });
+  }
+};
+
+export const deleteStartup = async (startupId: string) => {
+  const session = await auth();
+  if (!session)
+    return parseServerActionRes({
+      error: "Not signed in",
+      status: "ERROR",
+    });
+
+  try {
+    const engagements = await client
+      .withConfig({ useCdn: false })
+      .fetch(ALL_ENGAGEMENTS_QUERY, {
+        id: startupId,
+      });
+    if (engagements)
+      for (const docId of engagements) {
+        await writeClient.withConfig({ useCdn: false }).delete(docId._id);
+      }
+
+    const result = await writeClient
+      .withConfig({ useCdn: false })
+      .delete(startupId);
+
+    revalidatePath(`/user`);
+    revalidatePath("/");
+    return parseServerActionRes({
+      ...result,
+      error: "",
+      status: "SUCCESS",
+    });
+  } catch (error: unknown) {
+    return parseServerActionRes({
+      error: "Failed to delete Startup",
       status: "ERROR",
     });
   }

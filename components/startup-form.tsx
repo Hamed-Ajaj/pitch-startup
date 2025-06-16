@@ -120,12 +120,27 @@ const StartupForm = () => {
         <Input
           id="image"
           name="image"
-          required
+          // required
           className="startup-form_input"
           placeholder="Startup Image URL"
         />
         {error.image && <p className="startup-form_error">{error.image}</p>}
       </div>
+
+      {/* pictur */}
+      {/* <div>
+        <label className="startup-form_label" htmlFor="picture">
+          Picture
+        </label>
+        <Input
+          id="picture"
+          type="file"
+          name="picture"
+          required
+          className="py-2 border-3 border-black"
+        />
+      </div> */}
+
       {/* markdown */}
       <div data-color-mode="light">
         <label htmlFor="pitch" className="startup-form_label">

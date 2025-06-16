@@ -9,6 +9,7 @@ export const comment = {
       name: "author",
       type: "reference",
       to: { type: "author" },
+      weak: true,
     }),
     defineField({
       name: "authorId",
@@ -36,6 +37,7 @@ export const comment = {
       name: "startup",
       type: "reference",
       to: { type: "startup" },
+      weak: true,
       validation: (Rule) =>
         Rule.required().error("Startup reference is required"),
     }),

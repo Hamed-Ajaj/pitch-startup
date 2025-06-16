@@ -1,6 +1,7 @@
 import { formatDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import {
+  ALL_ENGAGEMENTS_QUERY,
   COMMENTS_QUERY,
   PLAYLIST_BY_SLUG_QUERY,
   STARTUP_BY_ID_QUERY,
@@ -36,6 +37,13 @@ const StartupPostDetails = async ({
   const comments = await client
     .withConfig({ useCdn: false })
     .fetch(COMMENTS_QUERY, { id: postId });
+
+  const engagements = await client
+    .withConfig({ useCdn: false })
+    .fetch(ALL_ENGAGEMENTS_QUERY, {
+      id: post._id,
+    });
+  console.log(engagements);
 
   const parsedContent = md.render(post?.pitch || "");
   if (!post) return notFound();

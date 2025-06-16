@@ -21,6 +21,7 @@ export const STARTUPS_QUERY = defineQuery(`
     description,
     category,
     image,
+    picture,
   }
 `);
 
@@ -42,6 +43,7 @@ export const STARTUP_BY_ID_QUERY = defineQuery(`
     description,
     category,
     image,
+    picture,
     pitch,
     comments[]{
       author->{
@@ -122,6 +124,10 @@ export const UPVOTES_QUERY = defineQuery(`
 export const DOWNVOTES_QUERY = defineQuery(`
   *[_type == "downvote" && startup._ref == $id]
 `);
+
+export const ALL_ENGAGEMENTS_QUERY = defineQuery(`
+    *[_type in ["comment", "upvote", "downvote"]  && startup._ref == $id]
+  `);
 
 export const AUTHOR_BY_GITHUB_ID_QUERY = defineQuery(`
 *[_type == "author" && id == $id][0]{

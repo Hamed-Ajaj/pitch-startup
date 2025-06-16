@@ -13,14 +13,22 @@ import Link from "next/link";
 import { Author, Startup } from "@/sanity.types";
 import { client } from "@/sanity/lib/client";
 import {
+  ALL_ENGAGEMENTS_QUERY,
   COMMENTS_COUNT_QUERY,
   DOWNVOTES_QUERY,
   UPVOTES_QUERY,
 } from "@/sanity/lib/queries";
+import DeleteStartupButton from "./ui/delete-startup-btn";
 
 export type StartupTypeCard = Omit<Startup, "author"> & { author?: Author };
 
-const StartupCard = async ({ post }: { post: StartupTypeCard }) => {
+const StartupCard = async ({
+  post,
+  isAuthor = false,
+}: {
+  post: StartupTypeCard;
+  isAuthor: boolean;
+}) => {
   const commentsCount = await client.fetch(COMMENTS_COUNT_QUERY, {
     id: post?._id,
   });
@@ -106,7 +114,7 @@ const StartupCard = async ({ post }: { post: StartupTypeCard }) => {
         <div className="flex-1 flex flex-col">
           <Link
             href={`/startup/${post?._id}`}
-            className="block relative flex-1 flex flex-col"
+            className="relative flex-1 flex flex-col"
           >
             {/* Description */}
             <div className="px-6 pb-4 flex-1">
@@ -118,7 +126,7 @@ const StartupCard = async ({ post }: { post: StartupTypeCard }) => {
             {/* Image with improved styling */}
             <div className="relative overflow-hidden mx-6 mb-6 rounded-xl group-hover:rounded-lg transition-all duration-300">
               <Image
-                src={post?.image}
+                src={post?.picture ? post.picture : post.image}
                 alt={post?.title || "Startup image"}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                 width={400}
@@ -178,6 +186,11 @@ const StartupCard = async ({ post }: { post: StartupTypeCard }) => {
           </div>
         </div>
       </div>
+      {isAuthor && (
+        <div className="absolute hidden transition group-hover:block -top-3 -right-3 z-10">
+          <DeleteStartupButton startupId={post._id} />
+        </div>
+      )}
     </li>
   );
 };
