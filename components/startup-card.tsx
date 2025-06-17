@@ -126,7 +126,7 @@ const StartupCard = async ({
             {/* Image with improved styling */}
             <div className="relative overflow-hidden mx-6 mb-6 rounded-xl group-hover:rounded-lg transition-all duration-300">
               <Image
-                src={post?.picture ? post.picture : post.image}
+                src={post?.image}
                 alt={post?.title || "Startup image"}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                 width={400}

@@ -25,7 +25,7 @@ export const createPitch = async (
       status: "ERROR",
     });
 
-  const { title, description, category, image } = Object.fromEntries(
+  const { title, description, category, image, picture } = Object.fromEntries(
     Array.from(form).filter(([key]) => key !== "pitch"),
   );
 
@@ -37,7 +37,7 @@ export const createPitch = async (
       description,
       category,
       image: image,
-      // picture: picture,
+      picture: picture,
       slug: {
         _type: slug,
         current: slug,
@@ -66,6 +66,44 @@ export const createPitch = async (
   }
 };
 
+
+export const editStartup = async (state: any,
+  form: FormData,
+  pitch: string,
+  startupId: string,
+) => {
+  const session = await auth();
+
+  if (!session)
+    return parseServerActionRes({
+      error: "Not signed in",
+      status: "ERROR",
+    });
+
+  const { title, description, category, image, picture } = Object.fromEntries(
+    Array.from(form).filter(([key]) => key !== "pitch"),
+  );
+
+  const slug = slugify(title as string, { lower: true, strict: true });
+
+  // try {
+  //   const startup = {
+  //     title,
+  //     description,
+  //     category,
+  //     image: image,
+  //     picture: picture,
+  //     slug: {
+  //       _type: slug,
+  //       current: slug,
+  //     },
+  //     pitch,
+  //   };
+  //   const editStartup = await writeClient.patch(startupId).set({
+  //
+  //   })
+  // }
+}
 export const deleteStartup = async (startupId: string) => {
   const session = await auth();
   if (!session)

@@ -21,7 +21,11 @@ export const STARTUPS_QUERY = defineQuery(`
     description,
     category,
     image,
-    picture,
+    "picture":image{
+      asset->{
+        _id,
+        url
+      }},
   }
 `);
 

@@ -43,7 +43,7 @@ const StartupPostDetails = async ({
     .fetch(ALL_ENGAGEMENTS_QUERY, {
       id: post._id,
     });
-  console.log(engagements);
+  console.log(post);
 
   const parsedContent = md.render(post?.pitch || "");
   if (!post) return notFound();

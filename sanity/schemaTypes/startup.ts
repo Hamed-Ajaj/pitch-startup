@@ -59,11 +59,11 @@ export const startup = {
       type: "url",
       validation: (Rule) => Rule.required(),
     }),
-    // defineField({
-    //   name: "picture",
-    //   type: "image",
-    //   validation: (Rule) => Rule.required(),
-    // }),
+    defineField({
+      name: "picture",
+      type: "image",
+      validation: (Rule) => Rule.required(),
+    }),
     defineField({
       name: "pitch",
       type: "markdown",

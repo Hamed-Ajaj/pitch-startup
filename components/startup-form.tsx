@@ -10,7 +10,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createPitch } from "@/lib/actions";
-const StartupForm = () => {
+import { Startup } from "@/sanity.types";
+const StartupForm = ({ post }: { post?: Startup }) => {
   const [error, setError] = useState<Record<string, string>>({});
   const [pitch, setPitch] = useState<string>("");
   const router = useRouter();
@@ -21,6 +22,7 @@ const StartupForm = () => {
         description: formData.get("description")?.toString() || "",
         category: formData.get("category")?.toString() || "",
         image: formData.get("image")?.toString() || "",
+        picture: formData.get("picture") || "",
         pitch,
       };
 
@@ -75,6 +77,7 @@ const StartupForm = () => {
           id="title"
           name="title"
           required
+          defaultValue={post?.title}
           className="startup-form_input"
           placeholder="Startup Title"
         />
@@ -90,6 +93,7 @@ const StartupForm = () => {
           name="description"
           className="startup-form_textarea"
           required
+          defaultValue={post?.description}
           placeholder="Startup Description"
         />
         {error.description && (
@@ -105,6 +109,7 @@ const StartupForm = () => {
           id="category"
           name="category"
           required
+          defaultValue={post?.category}
           className="startup-form_input"
           placeholder="Startup Category"
         />
@@ -120,7 +125,8 @@ const StartupForm = () => {
         <Input
           id="image"
           name="image"
-          // required
+          required
+          defaultValue={post?.image}
           className="startup-form_input"
           placeholder="Startup Image URL"
         />
@@ -128,18 +134,18 @@ const StartupForm = () => {
       </div>
 
       {/* pictur */}
-      {/* <div>
-        <label className="startup-form_label" htmlFor="picture">
-          Picture
-        </label>
-        <Input
-          id="picture"
-          type="file"
-          name="picture"
-          required
-          className="py-2 border-3 border-black"
-        />
-      </div> */}
+      {/* <div> */}
+      {/*   <label className="startup-form_label" htmlFor="picture"> */}
+      {/*     Picture */}
+      {/*   </label> */}
+      {/*   <Input */}
+      {/*     id="picture" */}
+      {/*     type="file" */}
+      {/*     name="picture" */}
+      {/*     required */}
+      {/*     className="py-2 border-3 border-black" */}
+      {/*   /> */}
+      {/* </div> */}
 
       {/* markdown */}
       <div data-color-mode="light">
@@ -148,7 +154,7 @@ const StartupForm = () => {
         </label>
 
         <MDEditor
-          value={pitch}
+          value={post?.pitch || pitch}
           onChange={(value) => setPitch(value as string)}
           id="pitch"
           preview="edit"
