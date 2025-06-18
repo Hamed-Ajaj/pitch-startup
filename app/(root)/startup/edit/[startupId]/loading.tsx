@@ -9,15 +9,15 @@ const loading = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%)",
+        background: "linear-gradient(135deg, #f8fafc 0%, #fce7f3 100%)",
       }}
     >
       <div
         style={{
           width: 60,
           height: 60,
-          border: "6px solid #6366f1",
-          borderTop: "6px solid #e0e7ff",
+          border: "6px solid #EE2B69",
+          borderTop: "6px solid #fce7f3",
           borderRadius: "50%",
           animation: "spin 1s linear infinite",
         }}
@@ -31,7 +31,7 @@ const loading = () => {
       <div
         style={{
           marginTop: 24,
-          color: "#6366f1",
+          color: "#EE2B69",
           fontWeight: 600,
           fontSize: 20,
           letterSpacing: 1,
@@ -42,5 +42,4 @@ const loading = () => {
     </div>
   );
 };
-
 export default loading;
