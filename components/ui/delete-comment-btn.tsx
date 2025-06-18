@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useTransition } from "react";
 import { Button } from "./button";
-import { Loader, Trash } from "lucide-react";
+import { Loader, Trash, Trash2 } from "lucide-react";
 import { deleteComment } from "@/lib/actions";
 import { toast } from "sonner";
+import { DropdownMenuItem } from "./dropdown-menu";
 
 const DeleteCommentButton = ({ commentId }: { commentId: string }) => {
   // const [isPending, startTransition] = useTransition();
@@ -22,18 +23,26 @@ const DeleteCommentButton = ({ commentId }: { commentId: string }) => {
   };
 
   return (
-    <Button
-      variant="destructive"
-      className="cursor-pointer hover:bg-red-500"
-      onClick={handleDeleteComment}
-      disabled={isDeleting}
-    >
-      {isDeleting ? (
-        <Loader className="animate-spin" />
-      ) : (
-        <Trash className="size-4" />
-      )}
-    </Button>
+    <div onClick={handleDeleteComment} className="">
+
+      <DropdownMenuItem
+        className="gap-2 text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
+
+      >
+        <Trash2 className="w-4 h-4" />
+
+        {isDeleting ? (
+          <p>Deleting...</p>
+        ) : (
+          <p>Delete</p>
+        )}
+
+      </DropdownMenuItem>
+
+
+
+    </div>
+
   );
 };
 

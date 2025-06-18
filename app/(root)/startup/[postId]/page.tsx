@@ -1,6 +1,7 @@
 import { formatDate } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import {
+  ALL_ENGAGEMENTS_QUERY,
   COMMENTS_QUERY,
   PLAYLIST_BY_SLUG_QUERY,
   STARTUP_BY_ID_QUERY,
@@ -19,6 +20,10 @@ import DeleteCommentButton from "@/components/ui/delete-comment-btn";
 import { auth } from "@/auth";
 import EngagementSection from "@/components/engagement-section";
 import EngagementSkeleton from "@/components/ui/engagement-skeleton";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { DropdownMenuContent, DropdownMenuGroup, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { Edit, Flag, MessageCircle, MoreHorizontal, Trash2, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 const md = markdownit();
 
 const StartupPostDetails = async ({
@@ -36,6 +41,12 @@ const StartupPostDetails = async ({
   const comments = await client
     .withConfig({ useCdn: false })
     .fetch(COMMENTS_QUERY, { id: postId });
+
+  const engagements = await client
+    .withConfig({ useCdn: false })
+    .fetch(ALL_ENGAGEMENTS_QUERY, {
+      id: post._id,
+    });
 
   const parsedContent = md.render(post?.pitch || "");
   if (!post) return notFound();
@@ -154,11 +165,50 @@ const StartupPostDetails = async ({
                             {formatDate(comment._createdAt)}
                           </p>
                         </div>
-                        {comment.author._id === session?.id && (
-                          <div className="flex-shrink-0">
-                            <DeleteCommentButton commentId={comment._id} />
-                          </div>
-                        )}
+
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-gray-100">
+                              <MoreHorizontal className="w-4 h-4 text-gray-500" />
+                              <span className="sr-only">Open menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+
+                          <DropdownMenuContent className="w-48 bg-gray-50 p-2 rounded-md border border-default" align="end" sideOffset={5}>
+                            {/* <DropdownMenuItem className="gap-2 cursor-pointer"> */}
+                            {/*   <MessageCircle className="w-4 h-4" /> */}
+                            {/*   Reply */}
+                            {/* </DropdownMenuItem> */}
+
+                            <DropdownMenuItem asChild>
+                              <Link
+                                href={`/user/${comment.author._id}`}
+                                className="flex items-center gap-2 cursor-pointer"
+                              >
+                                <User className="w-4 h-4" />
+                                View Profile
+                              </Link>
+                            </DropdownMenuItem>
+
+                            {/* <DropdownMenuSeparator /> */}
+                            {/**/}
+                            {/* <DropdownMenuItem className="gap-2 cursor-pointer"> */}
+                            {/*   <Flag className="w-4 h-4" /> */}
+                            {/*   Report */}
+                            {/* </DropdownMenuItem> */}
+                            {/**/}
+                            {comment.author._id === session?.id && (
+                              <>
+                                {/* <DropdownMenuSeparator /> */}
+                                {/* <DropdownMenuItem className="gap-2 cursor-pointer"> */}
+                                {/*   <Edit className="w-4 h-4" /> */}
+                                {/*   Edit */}
+                                {/* </DropdownMenuItem> */}
+                                <DeleteCommentButton commentId={comment._id} />
+                              </>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
                       <p className="text-16 leading-relaxed break-words">
                         {comment.content}

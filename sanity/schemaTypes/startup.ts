@@ -60,19 +60,13 @@ export const startup = {
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "picture",
+      type: "image",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "pitch",
       type: "markdown",
-    }),
-    // Engagement tracking fields
-    defineField({
-      name: "upvotes",
-      type: "array",
-      of: [{ type: "reference", to: { type: "upvote" } }],
-    }),
-    defineField({
-      name: "downvotes",
-      type: "array",
-      of: [{ type: "reference", to: { type: "downvote" } }],
     }),
   ],
 };

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { auth, signOut, signIn } from "@/auth";
-import { BadgePlus, LogOut } from "lucide-react";
+import { BadgePlus, Github, GithubIcon, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 const Navbar = async () => {
   const session = await auth();
@@ -54,7 +55,17 @@ const Navbar = async () => {
                 await signIn("github");
               }}
             >
-              <button type="submit">Login</button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button type="submit" className="cursor-pointer">
+                    <GithubIcon />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Login With Github
+                </TooltipContent>
+              </Tooltip>
+
             </form>
           )}
         </div>

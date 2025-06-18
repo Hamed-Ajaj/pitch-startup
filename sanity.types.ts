@@ -31,6 +31,7 @@ export type Startup = {
   description?: string;
   category?: string;
   image?: string;
+  picture?: File;
   pitch?: string;
   likes: number;
   likedBy: string[];

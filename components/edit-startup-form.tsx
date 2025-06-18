@@ -9,11 +9,11 @@ import { formSchema } from "@/lib/validations";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { createPitch } from "@/lib/actions";
+import { createPitch, editPitch } from "@/lib/actions";
 import { Startup } from "@/sanity.types";
-const StartupForm = ({ post }: { post?: Startup }) => {
+const EditStartupForm = ({ post }: { post?: Startup }) => {
   const [error, setError] = useState<Record<string, string>>({});
-  const [pitch, setPitch] = useState<string>("");
+  const [pitch, setPitch] = useState<string>(post?.pitch || "");
   const router = useRouter();
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
@@ -28,14 +28,14 @@ const StartupForm = ({ post }: { post?: Startup }) => {
 
       await formSchema.parseAsync(formValues);
 
-      const result = await createPitch(prevState, formData, pitch);
+      const result = await editPitch(prevState, formData, pitch, post?._id);
 
       if (result.status == "SUCCESS") {
         toast.success("Success", {
           description: "Your startup pitch has been created successfully",
         });
 
-        router.push(`/startup/${result._id}`);
+        router.push("/");
       }
       return result;
     } catch (error) {
@@ -154,7 +154,7 @@ const StartupForm = ({ post }: { post?: Startup }) => {
         </label>
 
         <MDEditor
-          value={post?.pitch || pitch}
+          value={pitch}
           onChange={(value) => setPitch(value as string)}
           id="pitch"
           preview="edit"
@@ -176,11 +176,11 @@ const StartupForm = ({ post }: { post?: Startup }) => {
         className="startup-form_btn text-white cursor-pointer"
         disabled={isPending}
       >
-        {isPending ? "Submitting..." : "Submit"}
+        {isPending ? "Editing..." : "Edit"}
         <Send className="size-6 ml-2" />
       </Button>
     </form>
   );
 };
 
-export default StartupForm;
+export default EditStartupForm;
