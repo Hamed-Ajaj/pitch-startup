@@ -6,7 +6,9 @@ import {
   DOWNVOTES_QUERY,
   UPVOTES_QUERY,
 } from "@/sanity/lib/queries";
-import { MessageCircle } from "lucide-react";
+import { Edit, MessageCircle } from "lucide-react";
+import Link from "next/link";
+import { auth } from "@/auth";
 
 const EngagementSection = async ({ post }) => {
   const [upvotes, downvotes, commentsCount] = await Promise.all([
@@ -19,6 +21,7 @@ const EngagementSection = async ({ post }) => {
     }),
   ]);
 
+  const session = await auth();
   return (
     <section className="section_container flex justify-between items-center ">
       <UpvoteDownvoteButtons
@@ -26,10 +29,20 @@ const EngagementSection = async ({ post }) => {
         upvotes={upvotes}
         downvotes={downvotes}
       />
-      {/* comments */}
-      <div className="flex gap-2 items-center">
-        <MessageCircle />
-        {commentsCount.length || 0}
+      <div className="flex gap-6 items-center">
+        {
+          session?.id === post.author._id && (<Link href={`/startup/edit/${post._id}`}>
+            <Edit />
+          </Link>
+          )
+        }
+
+        {/* comments */}
+        <div className="flex gap-2 items-center">
+          <MessageCircle />
+          {commentsCount.length || 0}
+        </div>
+
       </div>
     </section>
   );

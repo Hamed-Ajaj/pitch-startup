@@ -66,8 +66,8 @@ export const createPitch = async (
   }
 };
 
-
-export const editStartup = async (state: any,
+export const editPitch = async (
+  state: any,
   form: FormData,
   pitch: string,
   startupId: string,
@@ -86,24 +86,40 @@ export const editStartup = async (state: any,
 
   const slug = slugify(title as string, { lower: true, strict: true });
 
-  // try {
-  //   const startup = {
-  //     title,
-  //     description,
-  //     category,
-  //     image: image,
-  //     picture: picture,
-  //     slug: {
-  //       _type: slug,
-  //       current: slug,
-  //     },
-  //     pitch,
-  //   };
-  //   const editStartup = await writeClient.patch(startupId).set({
-  //
-  //   })
-  // }
-}
+  try {
+    const updatedFields = {
+      title,
+      description,
+      category,
+      image,
+      picture,
+      slug: {
+        _type: "slug",
+        current: slug,
+      },
+      pitch,
+    };
+
+    const result = await writeClient
+      .patch(startupId)
+      .set(updatedFields)
+      .commit();
+
+    return parseServerActionRes({
+      ...result,
+      error: "",
+      status: "SUCCESS",
+    });
+  } catch (error) {
+    console.log(error);
+
+    return parseServerActionRes({
+      error: JSON.stringify(error),
+      status: "ERROR",
+    });
+  }
+};
+
 export const deleteStartup = async (startupId: string) => {
   const session = await auth();
   if (!session)
