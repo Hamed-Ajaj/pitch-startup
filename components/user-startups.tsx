@@ -7,6 +7,7 @@ const UserStartups = async ({ id }: { id: string }) => {
   const startups = await client
     .withConfig({ useCdn: false })
     .fetch(STARTUPS_BY_AUTHOR_QUERY, { id });
+  console.log("startups", startups);
 
   return (
     <>

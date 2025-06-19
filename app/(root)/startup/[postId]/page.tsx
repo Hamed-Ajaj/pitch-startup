@@ -48,6 +48,10 @@ const StartupPostDetails = async ({
       id: post._id,
     });
 
+
+  const categories = post.category?.split('/')
+
+  console.log(categories)
   const parsedContent = md.render(post?.pitch || "");
   if (!post) return notFound();
   return (
@@ -68,7 +72,7 @@ const StartupPostDetails = async ({
       <section className="section_container">
         <div className="max-w-4xl mx-auto">
           <Image
-            src={post.image}
+            src={post?.picture?.asset?.url || post.image}
             alt="thumbnail"
             width={720}
             height={720}
@@ -95,9 +99,13 @@ const StartupPostDetails = async ({
                   </p>
                 </div>
               </Link>
-              <p className="category-tag self-start sm:self-center">
-                {post?.category}
-              </p>
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                {categories && categories.length > 0 && categories.map((category, index) => (
+                  <p key={index} className="category-tag self-start sm:self-center">
+                    {category.trim()}
+                  </p>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -190,20 +198,8 @@ const StartupPostDetails = async ({
                               </Link>
                             </DropdownMenuItem>
 
-                            {/* <DropdownMenuSeparator /> */}
-                            {/**/}
-                            {/* <DropdownMenuItem className="gap-2 cursor-pointer"> */}
-                            {/*   <Flag className="w-4 h-4" /> */}
-                            {/*   Report */}
-                            {/* </DropdownMenuItem> */}
-                            {/**/}
                             {comment.author._id === session?.id && (
                               <>
-                                {/* <DropdownMenuSeparator /> */}
-                                {/* <DropdownMenuItem className="gap-2 cursor-pointer"> */}
-                                {/*   <Edit className="w-4 h-4" /> */}
-                                {/*   Edit */}
-                                {/* </DropdownMenuItem> */}
                                 <DeleteCommentButton commentId={comment._id} />
                               </>
                             )}

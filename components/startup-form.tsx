@@ -11,10 +11,12 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { createPitch } from "@/lib/actions";
 import { Startup } from "@/sanity.types";
+
 const StartupForm = ({ post }: { post?: Startup }) => {
   const [error, setError] = useState<Record<string, string>>({});
   const [pitch, setPitch] = useState<string>("");
   const router = useRouter();
+
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
       const formValues = {
@@ -22,7 +24,7 @@ const StartupForm = ({ post }: { post?: Startup }) => {
         description: formData.get("description")?.toString() || "",
         category: formData.get("category")?.toString() || "",
         image: formData.get("image")?.toString() || "",
-        picture: formData.get("picture") || "",
+        picture: formData.get("picture") || null,
         pitch,
       };
 
@@ -62,12 +64,14 @@ const StartupForm = ({ post }: { post?: Startup }) => {
       };
     }
   };
+
   const [state, formAction, isPending] = useActionState(handleFormSubmit, {
     error: "",
     status: "INITIAL",
   });
+
   return (
-    <form action={formAction} className="startup-form">
+    <form action={formAction} className="startup-form" encType="multipart/form-data">
       {/* title */}
       <div>
         <label htmlFor="title" className="startup-form_label">
@@ -83,6 +87,7 @@ const StartupForm = ({ post }: { post?: Startup }) => {
         />
         {error.title && <p className="startup-form_error">{error.title}</p>}
       </div>
+
       {/* description */}
       <div>
         <label htmlFor="description" className="startup-form_label">
@@ -100,6 +105,7 @@ const StartupForm = ({ post }: { post?: Startup }) => {
           <p className="startup-form_error">{error.description}</p>
         )}
       </div>
+
       {/* category */}
       <div>
         <label htmlFor="category" className="startup-form_label">
@@ -117,35 +123,37 @@ const StartupForm = ({ post }: { post?: Startup }) => {
           <p className="startup-form_error">{error.category}</p>
         )}
       </div>
-      {/* image */}
-      <div>
-        <label htmlFor="image" className="startup-form_label">
-          Image URL
-        </label>
-        <Input
-          id="image"
-          name="image"
-          required
-          defaultValue={post?.image}
-          className="startup-form_input"
-          placeholder="Startup Image URL"
-        />
-        {error.image && <p className="startup-form_error">{error.image}</p>}
-      </div>
 
-      {/* pictur */}
+      {/* image url */}
       {/* <div> */}
-      {/*   <label className="startup-form_label" htmlFor="picture"> */}
-      {/*     Picture */}
+      {/*   <label htmlFor="image" className="startup-form_label"> */}
+      {/*     Image URL */}
       {/*   </label> */}
       {/*   <Input */}
-      {/*     id="picture" */}
-      {/*     type="file" */}
-      {/*     name="picture" */}
-      {/*     required */}
-      {/*     className="py-2 border-3 border-black" */}
+      {/*     id="image" */}
+      {/*     name="image" */}
+      {/*     defaultValue={post?.image} */}
+      {/*     className="startup-form_input" */}
+      {/*     placeholder="Startup Image URL" */}
       {/*   /> */}
+      {/*   {error.image && <p className="startup-form_error">{error.image}</p>} */}
       {/* </div> */}
+
+      {/* picture file upload */}
+      <div>
+        <label htmlFor="picture" className="startup-form_label">
+          Picture
+        </label>
+        <Input
+          id="picture"
+          name="picture"
+          type="file"
+          accept="image/*"
+          required
+          className="py-2 border-2 border-black"
+        />
+        {error.picture && <p className="startup-form_error">{error.picture}</p>}
+      </div>
 
       {/* markdown */}
       <div data-color-mode="light">
@@ -171,6 +179,7 @@ const StartupForm = ({ post }: { post?: Startup }) => {
 
         {error.pitch && <p className="startup-form_error">{error.pitch}</p>}
       </div>
+
       <Button
         type="submit"
         className="startup-form_btn text-white cursor-pointer"

@@ -13,7 +13,6 @@ import Link from "next/link";
 import { Author, Startup } from "@/sanity.types";
 import { client } from "@/sanity/lib/client";
 import {
-  ALL_ENGAGEMENTS_QUERY,
   COMMENTS_COUNT_QUERY,
   DOWNVOTES_QUERY,
   UPVOTES_QUERY,
@@ -38,6 +37,8 @@ const StartupCard = async ({
   const downvotes = await client.fetch(DOWNVOTES_QUERY, {
     id: post?._id,
   });
+
+  const categories = post.category?.split('/')
 
   if (!commentsCount)
     return (
@@ -126,7 +127,7 @@ const StartupCard = async ({
             {/* Image with improved styling */}
             <div className="relative overflow-hidden mx-6 mb-6 rounded-xl group-hover:rounded-lg transition-all duration-300">
               <Image
-                src={post?.image}
+                src={post?.picture?.asset?.url || post?.image}
                 alt={post?.title || "Startup image"}
                 className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                 width={400}
@@ -150,7 +151,8 @@ const StartupCard = async ({
               href={`/?query=${post?.category?.toLowerCase()}`}
               className="inline-flex items-center px-3 py-1.5 bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm font-medium rounded-full hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
             >
-              {post?.category}
+              {categories && (categories[0])}
+              {categories?.length > 1 && (<span className="ml-1 text-xs text-gray-200">+{categories?.length - 1}</span>)}
             </Link>
 
             {/* Engagement Stats */}

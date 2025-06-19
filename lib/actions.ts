@@ -30,6 +30,9 @@ export const createPitch = async (
   );
 
   const slug = slugify(title as string, { lower: true, strict: true });
+const imageAsset = await writeClient.assets.upload('image', picture, {
+  filename: picture.name,
+});
 
   try {
     const startup = {
@@ -37,7 +40,14 @@ export const createPitch = async (
       description,
       category,
       image: image,
-      picture: picture,
+      picture:  {
+    _type: 'image',
+    asset: {
+      _type: 'reference',
+      _ref: imageAsset._id,
+      url: imageAsset.URL
+        },
+                  },
       slug: {
         _type: slug,
         current: slug,
