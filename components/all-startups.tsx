@@ -10,6 +10,8 @@ const AllStartups = async ({ params }) => {
       next: { revalidate: 10 },
     });
 
+  console.log("All Startups:", posts);
+
   return (
     <ul className="mt-7 card_grid ">
       {posts.length > 0 ? (

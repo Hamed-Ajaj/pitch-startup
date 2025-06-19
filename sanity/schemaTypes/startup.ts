@@ -57,12 +57,14 @@ export const startup = {
     defineField({
       name: "image",
       type: "url",
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: "picture",
       type: "image",
       validation: (Rule) => Rule.required(),
+      options: {
+        hotspot: true, // Enable hotspot for image cropping
+      }
     }),
     defineField({
       name: "pitch",

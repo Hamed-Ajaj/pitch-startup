@@ -21,11 +21,12 @@ export const STARTUPS_QUERY = defineQuery(`
     description,
     category,
     image,
-    "picture":image{
+picture{
       asset->{
         _id,
         url
-      }},
+      }
+    }
   }
 `);
 
@@ -47,7 +48,12 @@ export const STARTUP_BY_ID_QUERY = defineQuery(`
     description,
     category,
     image,
-    picture,
+picture{
+      asset->{
+        _id,
+        url
+      }
+    },
     pitch,
     comments[]{
       author->{
@@ -169,6 +175,13 @@ export const STARTUPS_BY_AUTHOR_QUERY =
   views,
   description,
   category,
+picture{
+      asset->{
+        _id,
+        url
+      }
+    },
+
   image,
 }`);
 
